@@ -1,0 +1,169 @@
+<!doctype HTML>
+<html>
+<head>
+	<title>Country Expenditure Analysis</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//Load the google charts
+	google.charts.load('current',{'packages':['corechart']});
+	
+	//load the Callback function that runs when page loads
+	google.charts.setOnLoadCallback(drawMapSheet);
+	
+	function drawMapSheet() {
+		selectSheet('Military_Growth','SELECT A,D,E,F,G,H', milGrowthResponseHandler);
+		selectSheet('Health_Growth','SELECT A,K,L,M,N,O', healthGrowthResponseHandler);
+		selectSheet('Education_Growth','SELECT A,L,M,N,O', edGrowthResponseHandler);
+	}; //drawMapSheet
+	
+	function selectSheet(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1O-nQQkpJlOQ89CxeGV8c5PMwAu2oauus2Xg9cSnU09M/gviz/tq?sheet=' 
+		+ sheetName + '&headers=1&tq=' + queryString);
+		query.send(responseHandler);
+	} //selectSheet
+
+	function milGrowthResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1,desc:true});
+	
+	var options = {height: 400, legend:'none', bars:'horizontal', isStacked: true, annotations: {alwaysOutside:true},
+	title: 'Military Growth (2011-2015)', vAxis:{title: 'Country'}, hAxis:{title:'Spending Difference Per Person'}};
+	
+	var chart = new google.visualization.BarChart(document.getElementById('mil_growth_div'));
+	chart.draw(data, options)
+} // milGrowthResponseHandler
+
+	function healthGrowthResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1,desc:true});
+	
+	var options = {height: 400, legend:'none', bars:'horizontal', isStacked: true, annotations: {alwaysOutside:true},
+	title: 'Health Growth % GDP (2011-2015)', vAxis:{title: '% Change in GDP'}, hAxis:{title:'Country'}};
+	
+	var chart = new google.visualization.ColumnChart(document.getElementById('health_growth_div'));
+	chart.draw(data, options)
+} //healthGrowthResponseHandler
+
+	function edGrowthResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1,desc:true});
+	
+	var options = {height: 400, legend:'none', bars:'horizontal', isStacked: true, annotations: {alwaysOutside:true},
+	title: 'Education Growth % GDP (2011-2015)', vAxis:{title: 'Country'}, hAxis:{title:'% Change in GDP'}};
+	
+	var chart = new google.visualization.BarChart(document.getElementById('ed_growth_div'));
+	chart.draw(data, options)
+} //edGrowthResponseHandler
+
+
+
+	</script>
+</head>
+
+<body>
+<div id="main">
+	<div id="header">
+		<div id="logo">
+			<div id="logotext">
+				<h1>Country Expenditure Analysis</h1>
+			</div><!-- logotext -->
+		</div><!-- logo -->
+	</div><!-- header -->
+	<div id="menubar">
+		<div class="dropdown">
+			<h3>Menu</h3>
+			<div class="menu">
+				<ul>
+				<li class="selected"><a href="index.html">Home</a></li>
+				<li><a href="summary.html">Domain Summary</a></li>
+				<li><a href="growth.html">Growth Analysis</a></li>
+				<li><a href="trend.html">Trend Comparison</a></li>
+				</ul>
+			</div><!-- menu -->
+		</div><!-- dropdown -->
+	</div><!-- menubar -->
+	<div id="page_content">
+		<div id="box1">
+			<div class="sidebox">
+				<p>Comparison of military expenditure includes each country's military expenditure growth by year and it's gross domestic product (GDP). 
+				Calculations were created by taking the difference of the next year from the current year.  Example: 2011-2010 is the 2011 value.
+				<br/><br/>
+				The majority of countries have experienced a decline over time.  The only consistently growing country is China.
+				<br/><br/>
+				Even though the US has dominated the top of almost every comparison, it has also experienced the most decline over
+				the years under review.
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Military Growth<h2>
+				<div id="mil_growth_div"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box1 -->
+		<div id="box2">
+			<div class="sidebox">
+				<p>Comparison of healthcare expenditure includes each country's healthcare expenditure growth by year and it's gross domestic product (GDP). 
+				Calculations were created by taking the difference of the next year from the current year.  Example: 2011-2010 is the 2011 value. 
+				<br/><br/>
+				Japan has the highest and most stable growth in healthcare over time.  China also has complete positive growth over the years, but cannot match the 
+				percentage rate that Japan has maintained.
+				<br/><br/>
+				For most other countries, it appears that 2011 was a period of significant decline in healthcare budgets.
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Healthcare Growth<h2>
+				<div id="health_growth_div"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box2 -->
+		<div id="box3">
+			<div class="sidebox">
+				<p>Comparison of education expenditure includes each country's education expenditure growth by year and it's gross domestic product (GDP). 
+				Calculations were created by taking the difference of the next year from the current year.  Example: 2011-2010 is the 2011 value.
+				<br/><br/>
+				The US and UK's education spending over time is fairly well-balanced.  This indicates overall stagnation, although one year may represent 
+				high growth or decline.
+				<br/><br/>
+				Brazil has had the most positive growth trend over the years, with .36% growth in budget, even when accounting for 2014's decline.
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Education Growth<h2>
+				<div id="ed_growth_div"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box3 -->
+	</div><!-- page_content -->
+	<div id="footer">
+		<h4>DATS 6401 Visualization of Complex Data
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		Individual Project 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<script>var d= new Date(); var dd= d.getDate(); var mm = d.getMonth()+1; var yyyy = d.getFullYear(); document.write(mm+'/'+dd+'/'+yyyy);</script> 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<a href="#a" id="myBtn">Contact Me</a>
+		<!-- <button id="myBtn">Contact Me</button> -->
+			<div id="myModal">
+				<div class="contact_info">
+				<span id='close' class="close">&times;</span>
+					<p><br />
+					Samantha Roberts<br /><br />
+					M.S. Data Science<br /><br />
+					George Washington University<br /><br />
+					<a href="mailto:samroberts@gwu.edu">samroberts@gwu.edu</a><br /><br />
+					</p>
+				</div><!-- contact_info -->
+			</div><!-- myModal -->
+	</div><!-- footer -->
+</div><!-- main-->
+</body>
+<script type="text/javascript" src="script.js"></script>
+</html>

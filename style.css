@@ -1,0 +1,275 @@
+html {
+	height: 100%;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	background: #f5e6cd;
+	color: #000;
+}
+
+
+h1 {
+	font: normal 200% 'Bookman Old Style', arial, san-serif;
+	margin: 5px 0 0 0;
+	padding: 50px 0 0 0;
+	color: #eee;
+}
+
+h2 {
+	font: normal 175% arial, san-serif;
+	margin: 5px 0 5px 0;
+	padding: 5px 0 5px 10px;
+	color: #000;
+}
+
+h3 {
+	font: normal 120% arial, san-serif;
+	margin: 5px 0 5px 0;
+	padding: 5px 0 5px 10px;
+	color: #eee;
+}
+
+h4, h5, h6 {
+	margin: 0 0 10px 5px;
+	padding: 0 0 5px 0;
+	font: normal 75% 'Bookman Old Style', arial, san-serif;
+	color: #000;
+}
+
+a {
+	outline: none;
+	color: #eaecef;
+	text-decoration: underline;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+
+ul {
+	font-size: 110%;
+	margin: 0px 0 20px 10px;
+	list-style-position: inside;
+	list-style-type: none;
+}
+
+li {
+	list-style-type: none;
+	margin: 0px 0 10px 0;
+	padding: 5px 0 5px 0;
+	font: normal 105% arial, sans-serif;
+}
+
+p {
+	font-size: 120%;
+	margin: 50px 20px 20px -10px;
+	padding: 5px 0 5px 0;
+}
+
+#main {
+	height: 100%;
+	width: 100%;
+	position: center;
+	font: normal arial, sans-serif;
+	background: #f5e6cd;
+	color: #000;
+}
+
+#header {
+	width: 100%;
+	position: center;
+	text-align: center;
+}
+
+#logo {
+	width: 1950px;
+	position: relative;
+	height: 150px;
+	margin: -10px 0 0 0;
+	background: url(blue_logo.jpg);
+	background-size: cover;
+}
+
+
+#menubar {
+	width: 1950px;
+	height: 20px;
+	padding: 5px 0 10px 0;
+	margin: -50px 0 10px 10px;
+	position: relative;
+	z-index: 1;
+	float: left;
+	cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  color: #000;
+  height: 190px;
+  width: 150px;
+}
+
+.dropdown:hover .menu {
+  display: block;
+  text-decoration: none;
+  background-color: #e0e0eb;
+}
+
+.menu {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  padding: 12px 16px 0 0;
+  z-index: 1;
+  color: #000;
+  background: #eee;
+  height: 190px;
+  width: 150px;
+}
+
+
+.menu ul {
+	float: left;
+	padding: 0 0 0 10px;
+	height: 40px;
+	width: 200px;
+	position: relative;
+    display: inline-block;
+	list-style: none;
+	list-style-type: circle;
+	font: normal 75%;
+}
+
+.menu a {
+  display: block;
+  color: #000;
+  text-decoration: none;
+
+}
+
+.menu a:hover {
+	text-decoration: underline;
+}
+
+#page_content {
+	width: 1950px;
+	overflow: hidden;
+	float: center;
+}
+
+#box1, #box2, #box3, #box4 {
+	margin: 10px 0 0 10px;
+	padding: 5px 5px 0 20px;
+	text-align: center;
+	float:center;
+	width: 1855px;
+	height: 600px;
+	background: #eee;
+	border-color:#fff;
+}
+
+.chartbox {
+		float:right;
+		background: #f5e6cd;
+		width: 1400px;
+		height: 550px;
+		margin: 20px 0 0 0;
+}
+
+.sidebox {
+		float:left;
+		background: #f5e6cd;
+		width: 400px;
+		height: 550px;
+		margin: 20px 0 0 -15px;
+		padding: 0 0 0 50px;
+		text-align: left;
+}
+
+
+.sidebox ul {
+	width: 300px;
+	height: 300px;
+	padding: 30px 0 0 0;
+	margin: -45px -20px 30px 0;
+
+}
+
+.sidebox li {
+	font: normal 100% arial, san-serif;
+	padding: 0 0 0 40px;
+	list-style: none;
+}
+
+
+.google-visualization-tooltip { pointer-events: none }
+
+#footer {
+	width: 1950px;
+	height: 35px;
+	padding: 10px 0 4px 0;
+	font: normal arial, sans-serif;
+	text-align: center;
+	background: #fff;
+	color: #aaa;
+	border-top: 1px solid #fff;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+	position: relative;
+	bottom: 0;
+}
+
+#footer a {
+	font: bold arial, sans-serif;
+	color: #618bed;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	color: #6666ff;
+	text-decoration: underline;
+}
+
+#myModal {
+  display: none; 
+  position: absolute; 
+  z-index: 1; 
+  left: 800px;
+  top: -500px;
+  width: 500px;
+  height: 225px;
+  background-color: #f5e6cd;
+  font: bold 30%;
+  border: 5px solid #fff2e6;
+}
+
+
+.myModal {
+  background-color: #fefefe;
+  margin: -20px 0 0 10px;
+  padding: 0 5px 0 0;
+  border: 1px solid #888;
+  width: 200px;
+  text-align:center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

@@ -1,0 +1,116 @@
+<!doctype HTML>
+<html>
+<head>
+	<title>Country Expenditure Analysis</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//Load the google charts
+	google.charts.load('current',{'packages':['corechart']});
+	
+	//load the Callback function that runs when page loads
+	google.charts.setOnLoadCallback(drawMapSheet);
+	
+	function drawMapSheet() {
+		selectSheet('GDP','SELECT A,J', mapGDPResponseHandler);
+	} //drawMapSheet
+	
+	function selectSheet(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1O-nQQkpJlOQ89CxeGV8c5PMwAu2oauus2Xg9cSnU09M/gviz/tq?sheet=' 
+		+ sheetName + '&headers=1&tq=' + queryString);
+		query.send(responseHandler);
+	} //selectSheet
+	
+	function mapGDPResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column:1, desc:true});
+		
+		var options = {height:400, 
+						colorAxis:{colors:['#ff0000','#4374e0']}, //red to blue
+						title:'G20 Countries by GDP (2017)',
+		};		
+		
+		var chart = new google.visualization.GeoChart(
+				document.getElementById('map_gdp_div'));
+				
+		chart.draw(data, options);
+	} //mapGDPResponseHandler
+	</script>
+</head>
+
+<body>
+<div id="main">
+	<div id="header">
+		<div id="logo">
+			<div id="logotext">
+				<h1>Country Expenditure Analysis</h1>
+			</div><!-- logotext -->
+		</div><!-- logo -->
+	</div><!-- header -->
+	<div id="menubar">
+		<div class="dropdown">
+			<h3>Menu</h3>
+			<div class="menu">
+				<ul>
+				<li class="selected"><a href="index.html">Home</a></li>
+				<li><a href="summary.html">Domain Summary</a></li>
+				<li><a href="growth.html">Growth Analysis</a></li>
+				<li><a href="trend.html">Trend Comparison</a></li>
+				</ul>
+			</div><!-- menu -->
+		</div><!-- dropdown -->
+	</div><!-- menubar -->
+	<div id="page_content">
+		<div id="box1">
+		
+			<div class="sidebox">
+				<p>Welcome!  This is an overview of ten G20 countries (top 10 GDP income, excluding the European Union) over the years varying in range from 2010-2017.  
+				<br/><br/>The domains reviewed include military, healthcare, and education expenditures. 
+				<br/><br/>These are considered by currency expended in terms of total current US dollars, and USD and percent 
+				of spending by person, and gross domestic product (GDP) for each year.
+				<br/><br/>
+				Highlights:
+					<ul>
+						<li>Top GDP: United States </li>
+						<li>Top GDP/person: United States</li>
+						<li>Most Populated: China</li>
+					</ul>
+					</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Countries Overview & Introduction<h2>
+				<div id="map_gdp_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box1 -->
+	</div><!-- page_content -->
+	<div id="footer">
+		<h4>DATS 6401 Visualization of Complex Data
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		Individual Project 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<script>var d= new Date(); var dd= d.getDate(); var mm = d.getMonth()+1; var yyyy = d.getFullYear(); document.write(mm+'/'+dd+'/'+yyyy);</script> 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<a href="#a" id="myBtn" data-toggle="modal" data-target="#myModal">Contact Me</a>
+		<!-- <button id="myBtn">Contact Me</button> -->
+						<div id="myModal">
+		<div class="contact_info">
+		<span id='close' class="close">&times;</span>
+			<p><br />
+			Samantha Roberts<br /><br />
+			M.S. Data Science<br /><br />
+			George Washington University<br /><br />
+			<a href="mailto:samroberts@gwu.edu">samroberts@gwu.edu</a><br /><br />
+			</p>
+		</div><!-- contact_info -->
+		</div><!-- myModal -->
+	</div><!-- footer -->
+</div><!-- main-->
+<script type="text/javascript" src="script.js"></script>
+</body>
+
+</html>

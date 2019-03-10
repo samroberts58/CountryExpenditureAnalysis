@@ -1,0 +1,215 @@
+<!doctype HTML>
+<html>
+<head>
+	<title>Country Expenditure Analysis</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//Load the google charts
+	google.charts.load('current',{'packages':['corechart']});
+	
+	//load the Callback function that runs when page loads
+	google.charts.setOnLoadCallback(drawMapSheet);
+	
+	function drawMapSheet() {
+selectSheet('Mil_vs_Health','SELECT A,C,D,E,F,G,H', milVsHealthResponseHandler);
+selectSheet('Mil_vs_Ed','SELECT A,C,D,E,F,G,H,I', milVsEducationResponseHandler);
+selectSheet('Health_vs_Ed','SELECT A,C,D,E,F,G,H', healthVsEducationResponseHandler);
+selectSheet('Total_Comparison','SELECT A,C,D,E,F,G,H', totalComparisonResponseHandler);
+	} //drawSheet
+	
+	function selectSheet(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1O-nQQkpJlOQ89CxeGV8c5PMwAu2oauus2Xg9cSnU09M/gviz/tq?sheet=' 
+		+ sheetName + '&headers=1&tq=' + queryString);
+		query.send(responseHandler);
+	} //selectSheet
+	
+	function milVsHealthResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column:1, desc:true});
+		
+		var options = {
+						title:'Military vs Health Expenditure',
+						vAxis:{title: '% of Spending Mil/Health'}, hAxis:{title:'Country'},
+						seriesType: 'bars',
+						series: {5: {type: 'line'}}
+						
+		};		
+		
+		var chart = new google.visualization.ComboChart(
+				document.getElementById('mil_vs_health_div'));
+				
+		chart.draw(data, options);
+	} //milVsHealthResponseHandler
+	
+		function milVsEducationResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column:1, desc:true});
+		
+		var options = {
+						title:'Military vs Education Expenditure',
+						vAxis:{title: '% of Spending Mil/Health'}, hAxis:{title:'Country'}
+						
+		};		
+		
+		var chart = new google.visualization.ComboChart(
+				document.getElementById('mil_vs_ed_div'));
+				
+		chart.draw(data, options);
+	} //milVsEducationResponseHandler
+	
+		function healthVsEducationResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column:1, desc:true});
+		
+		var options = {
+						title:'Health vs Education Expenditure',
+						vAxis:{title: 'Count of Countries'}, hAxis:{title:'% of Spending Health/Education'}
+						
+		};		
+		
+		var chart = new google.visualization.Histogram(
+				document.getElementById('health_vs_ed_div'));
+				
+		chart.draw(data, options);
+	} //healthVsEducationResponseHandler
+	
+	function totalComparisonResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1,desc:true});
+	
+	var options = {
+        title: 'Military, education, and health expenditures as % GDP',
+        hAxis: {title: 'Country'},
+        vAxis: {title: 'Total % GDP'},
+		pieHole: 0.2,
+      };
+
+      var chart = new google.visualization.PieChart(document.getElementById('total_comp_div'));
+      chart.draw(data, options);
+} //totalComparisonResponseHandler
+	</script>
+</head>
+</head>
+
+<body>
+<div id="main">
+	<div id="header">
+		<div id="logo">
+			<div id="logotext">
+				<h1>Country Expenditure Analysis</h1>
+			</div><!-- logotext -->
+		</div><!-- logo -->
+	</div><!-- header -->
+	<div id="menubar">
+		<div class="dropdown">
+			<h3>Menu</h3>
+			<div class="menu">
+				<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="summary.html">Domain Summary</a></li>
+				<li><a href="growth.html">Growth Analysis</a></li>
+				<li class="selected"><a href="trend.html">Trend Comparison</a></li>
+				</ul>
+			</div><!-- menu -->
+		</div><!-- dropdown -->
+	</div><!-- menubar -->
+	<div id="page_content">
+		<div id="box1">
+			<div class="sidebox">
+			<p>Comparison of military and health expenditure includes each country's expenditures by year.
+			It is shown as military expenditure/health expenditure to create a ratio for comparison between countries.
+				<br/><br/>
+				India maintains the highest ratio of military to healthcare spending, with early years hovering around 80%.
+				<br/><br/>
+				Japan is the lowest at around 15% military expenditure.  Based on budgeting, Japan's healthcare policy and programs
+				are likely more effective than its military for these years.
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Military vs Healthcare Expenditure<h2>
+				<div id="mil_vs_health_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 400px;"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box1 -->
+		<div id="box2">
+			<div class="sidebox">
+			<p>Comparison of military and education expenditure includes each country's expenditures by year.
+			It is shown as military expenditure/education expenditure to create a ratio for comparison between countries.
+				<br/><br/>
+				China has consistently spent more money on it's military than education.  Every other country has spent
+				less, although the US and India are also close.
+				<br/><br/>The US has fluctuated the most, with more recent years being much lower than it's historical spending and it's nearest neighbors.
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Military vs Education Expenditure<h2>
+				<div id="mil_vs_ed_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 400px"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box2 -->
+		<div id="box3">
+			<div class="sidebox">
+			<p>Comparison of healthcare and education expenditure includes each country's expenditures by year.
+			It is shown as healthcare expenditure/education expenditure to create a ratio for comparison between countries.
+				<br/><br/>
+				This histogram represents a basic bell-curve shape pretty well.  Over the years and amongst the ten countries, it can be noted that
+				most countries stay within it's own percentage bracket over time.  
+				<br/><br/>For example, the US's percentage may vary as much as 44% over time,
+				but it is always in the 300%+ section. 
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Healthcare vs Education Expenditure<h2>
+				<div id="health_vs_ed_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 400px"></div>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box3 -->
+		<div id="box4">
+			<div class="sidebox">
+			<p>Comparison of all domain expenditure includes each country's military, health and education expenditure by year and it's gross domestic product (GDP). 
+				<br/>
+				<br/>
+				Although France was generally in the middle of the pack as represented by the various charts, it is second in terms of total spending percentage against it's GDP. 
+				In fact, European countries dominate among the top countries in this comparison.  Only the US and Canada are disruptive among the top spenders overall.
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Total Comparison Expenditure<h2>
+				<td><div id="total_comp_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 400px;"></div></td>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box4 -->
+	</div><!-- page_content -->
+	<div id="footer">
+		<h4>DATS 6401 Visualization of Complex Data
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		Individual Project 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<script>var d= new Date(); var dd= d.getDate(); var mm = d.getMonth()+1; var yyyy = d.getFullYear(); document.write(mm+'/'+dd+'/'+yyyy);</script> 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<a href="#a" id="myBtn">Contact Me</a>
+		<!-- <button id="myBtn">Contact Me</button> -->
+			<div id="myModal">
+				<div class="contact_info">
+				<span id='close' class="close">&times;</span>
+					<p><br />
+					Samantha Roberts<br /><br />
+					M.S. Data Science<br /><br />
+					George Washington University<br /><br />
+					<a href="mailto:samroberts@gwu.edu">samroberts@gwu.edu</a><br /><br />
+					</p>
+				</div><!-- contact_info -->
+			</div><!-- myModal -->
+	</div><!-- footer -->
+</div><!-- main-->
+</body>
+<script type="text/javascript" src="script.js"></script>
+</html>

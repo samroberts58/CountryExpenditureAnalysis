@@ -1,0 +1,246 @@
+<!doctype HTML>
+<html>
+<head>
+	<title>Country Expenditure Analysis</title>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+	//Load the google charts
+	google.charts.load('current',{'packages':['corechart']});
+	
+	//load the Callback function that runs when page loads
+	google.charts.setOnLoadCallback(drawMapSheet);
+	
+	function drawMapSheet() {
+		selectSheet('Military','SELECT A,U,V,W,X,Y,Z,AA,AB', militaryGDPResponseHandler);
+		selectSheet('Health','SELECT A,Q,R,S,T,U,V', healthGDPResponseHandler);
+		selectSheet('Education','SELECT A,S,T,U,V,W,X,Y', educationGDPResponseHandler);
+		selectSheet('Military','SELECT A,AD,AE,AF,AG,AH,AI,AJ,AK', milPerPersonRatioResponseHandler);
+		selectSheet('Health','SELECT AE,AF,AG,AH,AI,AJ,AK,AL,AM,AN,AO', healthPerPersonRatioResponseHandler);
+		selectSheet('Education','SELECT A,AA,AB,AC,AD,AE,AF,AG', edPerPersonRatioResponseHandler);
+	}; //drawMapSheet
+	
+	function selectSheet(sheetName, query, responseHandler) {
+		var queryString = encodeURIComponent(query);
+		var query = new google.visualization.Query(
+		'https://docs.google.com/spreadsheets/d/1O-nQQkpJlOQ89CxeGV8c5PMwAu2oauus2Xg9cSnU09M/gviz/tq?sheet=' 
+		+ sheetName + '&headers=1&tq=' + queryString);
+		query.send(responseHandler);
+	} //selectSheet
+	
+	function militaryGDPResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column:1, desc:true});
+		
+		var options = {width:650, height:400, annotations:{alwaysOutside: true},
+		title:'Military Expense as % GDP (2010-2017)',
+		hAxis:{title:'Country'}, vAxis:{title: '%GDP'}, lineWidth: 2};
+		
+		var chart = new google.visualization.LineChart(
+				document.getElementById('military_gdp_div'));
+				
+		chart.draw(data, options);
+	}; //militaryGDPResponseHandler
+	
+		function milPerPersonRatioResponseHandler(response) {
+		var data = response.getDataTable();
+		data.sort({column:1, desc:true});
+		
+		var options = {width:650, height:400, bars: {position:'horizontal',isStacked:true}, bar:{groupWidth: '1000%'},annotations:{alwaysOutside: true},
+		title:'Military Expense by GDP per person (2010-2017)',
+		vAxis:{title:'Country'}, hAxis:{title: '% GDP per person'}};
+		
+		var chart = new google.visualization.BarChart(
+				document.getElementById('mil_ratio_div'));
+				
+		chart.draw(data, options);
+	}; //milPerPersonRatioResponseHandler
+
+	function healthGDPResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1, desc:true});
+	
+	var options = {width:650, height:400, bar:{groupWidth: '200%'}, annotations:{alwaysOutside: true},
+	title:'Health Expense as % GDP (2010-2016)',
+	vAxis:{title:'Country'}, hAxis:{title: '% GDP'}};
+	
+	var chart = new google.visualization.ColumnChart(
+			document.getElementById('health_gdp_div'));
+			
+	chart.draw(data, options);
+}; //healthGDPResponseHandler
+
+	function healthPerPersonRatioResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1, desc:false});
+	
+	var options = {width:650, height:400, annotations:{alwaysOutside: true},
+	title:'Health Expense by GDP per person (2010-2016)',
+	vAxis:{title:'% GDP per person'}, hAxis:{title: 'Years'},
+	lineWidth:4};
+	
+	var chart = new google.visualization.LineChart(
+			document.getElementById('health_ratio_div'));
+			
+	chart.draw(data, options);
+}; //healthPerPersonRatioResponseHandler
+
+	function educationGDPResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1, desc:true});
+	
+	var options = {width:650, height:400, bars: {position:'horizontal',isStacked:true}, annotations:{alwaysOutside: true},
+	title:'Education Expense as % GDP (2010-2015)',
+	vAxis:{title:'Country'}, hAxis:{title: '%'}};
+	
+	var chart = new google.visualization.PieChart(
+			document.getElementById('education_gdp_div'));
+			
+	chart.draw(data, options);
+}; //educationGDPResponseHandler
+
+	function edPerPersonRatioResponseHandler(response) {
+	var data = response.getDataTable();
+	data.sort({column:1, desc:true});
+	
+	var options = {width:650, height:400, bars: {position:'horizontal',isStacked:true}, annotations:{alwaysOutside: true},
+	title:'Education Expense by GDP per person (2010-2016)',
+	vAxis:{title:'% GDP per person'}, hAxis:{title: 'Country'}};
+	
+	var chart = new google.visualization.SteppedAreaChart(
+			document.getElementById('education_ratio_div'));
+			
+	chart.draw(data, options);
+}; //edPerPersonRatioResponseHandler
+	</script>
+</head>
+
+<body>
+<div id="main">
+	<div id="header">
+		<div id="logo">
+			<div id="logotext">
+				<h1>Country Expenditure Analysis</h1>
+			</div><!-- logotext -->
+		</div><!-- logo -->
+	</div><!-- header -->
+	<div id="menubar">
+		<div class="dropdown">
+			<h3>Menu</h3>
+			<div class="menu">
+				<ul>
+				<li class="selected"><a href="index.html">Home</a></li>
+				<li><a href="summary.html">Domain Summary</a></li>
+				<li><a href="growth.html">Growth Analysis</a></li>
+				<li><a href="trend.html">Trend Comparison</a></li>
+				</ul>
+			</div><!-- menu -->
+		</div><!-- dropdown -->
+	</div><!-- menubar -->
+	<div id="page_content">
+		<div id="box1">
+			<div class="sidebox">
+				<p>Comparison of military expenditure includes each country's military expenditure by year and it's gross domestic product (GDP). 
+				<br/>
+				<br/>
+				Significant trends and outliers include a general downward trend for all countries over time.  The US has made the most significant
+				decline, whereas Japan has remained consistently low over the years.
+				<br/><br/>The top three countries in spending have all followed a downward trend in military spending totals per person.
+				The rest appear to have minor fluctuations up and down.
+				<br/><br/>Highlights:
+					<ul>
+						<li>Top Expenditure: United States </li>
+						<li>Top GDP/person: United States</li>
+					</ul>				
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Military Summary<h2>
+				<table class="columns">
+					<tr>
+				<td><div id="military_gdp_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div></td>
+				<td><div id="mil_ratio_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div></td>
+					</tr>
+				</table>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box1 -->
+		<div id="box2">
+			<div class="sidebox">
+				<p>Comparison of health expenditure includes each country's health expenditure by year and it's gross domestic product (GDP). 
+				<br/>
+				<br/>
+				Significant trends and outliers include stable spending trends across time for each country with slight increases in later years.
+				<br/><br/>The per person trend is similar.  The United States is far above the other countries, and the other most highly populated countries (China and India) are far below the group.
+				<br/><br/>Highlights:
+					<ul>
+						<li>Top Expenditure: United States </li>
+						<li>Top GDP/person: United States</li>
+					</ul>	
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Healthcare Summary<h2>
+				<table class="columns">
+					<tr>
+				<td><div id="health_gdp_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div></td>
+				<td><div id="health_ratio_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div></td>
+					</tr>
+				</table>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box2 -->
+		<div id="box3">
+			<div class="sidebox">
+				<p>Comparison of education expenditure includes each country's education expenditure by year and it's gross domestic product (GDP). 
+				<br/><br/>Significant trends and outliers include all countries have a similar percentage, with only China having a markedly smaller budget.
+				<br/><br/>The per person spending is tightly grouped at the top - 6/10 are within 1% of each other.
+				<br/><br/>Highlights:
+					<ul>
+						<li>Top Expenditure: United Kingdom </li>
+						<li>Top GDP/person: Brazil (5.57%)</li>
+					</ul>	
+				</p>
+			</div><!-- sidebox -->
+			<div class="chartbox">
+			<section class="col-sm-2 col-md-6 col-lg-12">
+				<h2>Education Summary<h2>
+				<table class="columns">
+					<tr>
+				<td><div id="education_gdp_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div></td>
+				<td><div id="education_ratio_div" style="margin-left: auto; margin-right: auto; padding: 20px; width: 95%; height: 95%"></div></td>
+					</tr>
+				</table>
+			</section>
+			</div><!-- chartbox -->
+		</div><!-- box3 -->
+	</div><!-- page_content -->
+		<div id="footer">
+		<h4>DATS 6401 Visualization of Complex Data
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		Individual Project 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<script>var d= new Date(); var dd= d.getDate(); var mm = d.getMonth()+1; var yyyy = d.getFullYear(); document.write(mm+'/'+dd+'/'+yyyy);</script> 
+		<img src="s.jpg" style="height:20px; width:40px"/> 
+		<a href="#a" id="myBtn">Contact Me</a>
+		<!-- <button id="myBtn">Contact Me</button> -->
+			<div id="myModal">
+				<div class="contact_info">
+				<span id='close' class="close">&times;</span>
+					<p><br />
+					Samantha Roberts<br /><br />
+					M.S. Data Science<br /><br />
+					George Washington University<br /><br />
+					<a href="mailto:samroberts@gwu.edu">samroberts@gwu.edu</a><br /><br />
+					</p>
+				</div><!-- contact_info -->
+			</div><!-- myModal -->
+	</div><!-- footer -->
+	</div><!-- footer -->
+</div><!-- main-->
+</body>
+<script type="text/javascript" src="script.js"></script>
+</html>
